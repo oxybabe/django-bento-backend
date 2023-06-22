@@ -1,5 +1,9 @@
 from django.shortcuts import render
 
+
+from menu_app.models import Appetizer, MainCourse, Dessert
+
+
 # Create your views here.
 
 menu_list=[
@@ -119,9 +123,39 @@ menu_list=[
 def home(request):
     return render(request, 'home.html')
 
+
 def menu(request):
     return render(request, 'menu.html', {'menu_data':menu_list} )
 
 def menu_item(request, index):
   item = menu_list[index]
   return render(request, 'menu_item.html', {'menu_item' : item} )
+
+def seed(request):
+    appetizers = [
+    Appetizer(name="Gyoza", japanese_name="野菜天ぷら", price= 599, description="Delicious pan-fried dumplings filled with seasoned ground pork and vegetables. Served with a tangy soy dipping sauce."),
+    Appetizer(name="Edamame", japanese_name="枝豆", price= 599, description="Steamed young soybeans lightly seasoned with sea salt. A classic and healthy Japanese appetizer."), 
+    Appetizer(name="Agedashi Tofu", japanese_name="揚げ出し豆腐", price= 599, description="Deep-fried tofu served in a flavorful dashi broth with grated daikon, green onions, and bonito flakes."),
+    Appetizer(name="Takoyaki", japanese_name="たこ焼き", price= 599, description="Savory octopus-filled batter balls cooked to perfection and topped with takoyaki sauce, mayonnaise, and bonito flakes."),                           
+]
+    Appetizer.objects.bulk_create(appetizers)
+      
+
+    main_course = [
+    MainCourse(name="Teriyaki Chicken", japanese_name="照り焼きチキン", price= 5.99, description="Grilled chicken marinated in a sweet and savory teriyaki sauce. Served with steamed rice and a side of mixed vegetables."),
+    MainCourse(name="Sushi Platter", japanese_name="寿司盛り合わせ", price= 5.99, description="A delightful assortment of fresh nigiri and maki sushi. Chef's selection may include tuna, salmon, shrimp, and vegetable rolls."),
+    MainCourse(name="Beef Yakiniku", japanese_name="焼肉", price= 5.99,  description="Thinly sliced beef marinated in a flavorful soy-based sauce and grilled to perfection. Served with a side of rice and kimchi."), 
+    MainCourse(name="Chicken Katsu Curry", japanese_name="チキンカツカレー", price= 5.99,  description="A premium selection of fresh sashimi, including tuna, salmon, yellowtail, and octopus. Served with wasabi, soy sauce, and pickled ginger.")
+      
+    ]
+    
+    MainCourse.objects.bulk_create(main_course)
+    
+    desserts = [
+    Dessert(name="Matcha Green Tea Ice Cream", japanese_name="抹茶アイスクリーム", price= 6.99, description="Creamy and refreshing matcha green tea-flavored ice cream. A perfect ending to your Japanese meal."), 
+    Dessert(name="Mochi Ice Cream", japanese_name="もちアイスクリーム", price= 6.99, description="Chewy mochi rice cake filled with various flavors of ice cream, such as strawberry, mango, and green tea."), 
+    Dessert(name="Dorayaki", japanese_name="どら焼き", price= 5.99, description="Sweet red bean paste sandwiched between two fluffy pancakes. A popular traditional Japanese dessert.") 
+    ]
+    Dessert.objects.bulk_create(desserts)
+    return render(request, 'food_type.html', {'appetizers': appetizers, 'main_course': main_course, 'desserts': desserts})
+    
